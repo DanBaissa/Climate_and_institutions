@@ -1,0 +1,77 @@
+---
+title: "Climate and Institutions"
+author: "Daniel K Baissa"
+date: "3/5/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+# Loads Libraries 
+library(lmtest)
+library(foreign)
+library(compactr)
+library(pcse)
+library(car)
+library(Matrix)
+library(robust)
+library(rlang)
+#library(arm)
+library(mgcv)
+library(splines)
+#library(plotrix)
+library(MASS)
+#library(calibrate)
+library(plm)
+library(rms)
+library(stargazer)
+#library(scatterplot3d)
+# install.packages("clusterSEs")
+library(clusterSEs)
+# install.packages("Zelig")
+# library(Zelig)
+# library(BNN)
+#install.packages("margins")
+library(DataCombine)
+library(Hmisc)
+library(sandwich)
+library(scales)
+library(tidyverse)
+library(sjPlot)
+library(mediation)
+library(glmnet)
+require(nnet)
+library(randomForest)
+library(corrr)
+library(caret)
+#install.packages("rJava")
+# install.packages("bartMachine")
+Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jdk-17.0.1')
+
+#Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jdk-11.0.1') #laptop
+require(rJava)
+options(java.parameters = "-Xmx75g")     # or 8g, or larger than this, ...
+require(bartMachine)
+set_bart_machine_num_cores(30)
+
+
+```
+
+
+
+### Data Setup
+
+For this project I will use two datasets one is a shapefile that contains country data bio 12 bio six soil data and globe cover and the other is the grand data set that we have from the banks data as well as polity.
+
+```{r}
+library(readr)
+library(sf)
+raw_df <- df<- read_csv("Data/cleaned_grand_data.csv")
+
+World_data <- read_sf("Shapefiles/country_bio12_bio6_soil_globcover.shp")
+```
+
+For the purposes of this project I do not need the shapefiles geometry so I will convert it to a dataframe and then I will merge it with the grand dataset.

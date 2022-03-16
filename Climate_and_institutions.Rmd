@@ -2,7 +2,9 @@
 title: "Climate and Institutions"
 author: "Daniel K Baissa"
 date: "3/5/2022"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -69,9 +71,241 @@ For this project I will use two datasets one is a shapefile that contains countr
 ```{r}
 library(readr)
 library(sf)
-raw_df <- df<- read_csv("Data/cleaned_grand_data.csv")
+# raw_df <- df<- read_csv("Data/cleaned_grand_data.csv")
+
+raw_df <- df <- read.csv(unz("Data/Big_data_set.zip", "cleaned_grand_data.csv"))
 
 World_data <- read_sf("Shapefiles/country_bio12_bio6_soil_globcover.shp")
 ```
 
 For the purposes of this project I do not need the shapefiles geometry so I will convert it to a dataframe and then I will merge it with the grand dataset.
+
+```{r}
+World_data2 <- as.data.frame(World_data)
+```
+
+Now I will create a variable that captures the percentage of soil types and terrain useage by country.
+
+```{r include=FALSE}
+World_data2 <- World_data2 %>% 
+  # filter(COUNTRY == "Canada") %>% 
+  # select(contains("Soil_HIS")) %>%
+  select(!contains("Soil_HISTO")) %>% 
+  mutate(sum = rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_1 = Soil_HIS_1/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_2 = Soil_HIS_2/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_3 = Soil_HIS_3/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_4 = Soil_HIS_4/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_5 = Soil_HIS_5/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_6 = Soil_HIS_6/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_7 = Soil_HIS_7/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_8 = Soil_HIS_8/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS_9 = Soil_HIS_9/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS10 = Soil_HIS10/rowSums(across(contains("Soil_HIS")))) %>%
+  mutate(percentage_Soil_HIS11 = Soil_HIS11/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS12 = Soil_HIS12/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS13 = Soil_HIS13/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS14 = Soil_HIS14/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS15 = Soil_HIS15/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS16 = Soil_HIS16/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS17 = Soil_HIS17/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS18 = Soil_HIS18/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS19 = Soil_HIS19/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS20 = Soil_HIS20/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS21 = Soil_HIS21/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS22 = Soil_HIS22/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS23 = Soil_HIS23/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS24 = Soil_HIS24/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS25 = Soil_HIS25/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS26 = Soil_HIS26/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS27 = Soil_HIS27/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS28 = Soil_HIS28/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS29 = Soil_HIS29/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS30 = Soil_HIS30/rowSums(across(contains("Soil_HIS")))) %>% 
+  mutate(percentage_Soil_HIS31 = Soil_HIS31/rowSums(across(contains("Soil_HIS")))) %>% 
+  
+  mutate(percentage_Soil_Globcove_1 = Globcove_1/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_2 = Globcove_2/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_3 = Globcove_3/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_4 = Globcove_4/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_5 = Globcove_5/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_6 = Globcove_6/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_7 = Globcove_7/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_8 = Globcove_8/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove_9 = Globcove_9/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove10 = Globcove10/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove11 = Globcove11/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove12 = Globcove12/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove13 = Globcove13/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove14 = Globcove14/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove15 = Globcove15/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove16 = Globcove16/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove17 = Globcove17/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove18 = Globcove18/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove19 = Globcove19/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove20 = Globcove20/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove21 = Globcove21/rowSums(across(contains("Globcove")))) %>% 
+  mutate(percentage_Soil_Globcove22 = Globcove22/rowSums(across(contains("Globcove")))) 
+
+```
+
+
+```{r}
+d_civ <- d <- merge(df, World_data2, by.x = "country", by.y = "COUNTRY")
+```
+
+
+Now let's select data greater than 2005
+
+```{r}
+d <- d %>% 
+  filter(year > 2005) %>% 
+  # select(c(economics2, energy1, contains("Soil_HIS"), contains("Globcove"), contains("bio")))
+  select(c(economics2, energy1, contains("bio"))) %>% 
+  mutate(abs_temp = abs(bio6_media)) %>% 
+  select(c(abs_temp, economics2, energy1, bio12_vari ))
+  # select(c(abs_temp, economics2, energy1, bio12_medi)) %>%
+  # mutate(log_abs_temp = log(abs_temp+1)) %>% 
+  # mutate(log_rainfall = log(bio12_medi)) %>% 
+  # select(c(log_abs_temp, economics2, energy1, log_rainfall))
+  
+
+```
+
+```{r}
+# write.csv(d, "climate_data.csv")
+```
+
+
+     Economics1 is devoted to national income per capita, economics2 to gross domestic product (at factor cost) per capita, and economics2 to gross national product (at market prices) per capita. These three basic components of aggregate product are defined as follows:
+          Gross national product at market prices is the market value of the product, before
+          deduction of provisions for the consumption of fixed capital, attributable to the 
+          factors of production supplied by normal residents of the given country. It is 
+          identically equal to the sum of consumption expenditure and gross domestic capital
+          formation, private and public, and the net exports of goods and services plus the net
+          factor incomes received from abroad.
+          Gross domestic product at factor cost is the value at factor cost of the product,
+          before deduction of provisions for the consumption of fixed capital, attributable to
+          factor services rendered to resident producers of the given country. It differs from
+          the gross domestic product at market prices by the exclusion of the excess of
+          indirect taxes over subsidies.
+          National income is the sum of the incomes accruing to factors of production
+          supplied by normal residents of the given country before deduction of direct taxes.
+          (UN Yearbook of National Accounts Statistics, 1969, v. 1, p. xi.)
+
+
+
+Now let's remove all of the NAs for economics 3
+
+```{r include=FALSE}
+d<- subset(d, !is.na(economics2))
+
+```
+
+
+```{r include=FALSE}
+cols <- colnames(d)
+
+removing<- c()
+
+for (i in 1:length(cols)) {
+  
+  n <- sum(is.na(d[,cols[i]]))
+  da <- length(d[[cols[i]]])
+
+    if (n/da > .05) {
+     removing[i] <- cols[i]
+  } 
+
+}
+  
+d2 <- d %>% 
+  select(!na.omit(removing))
+ 
+```
+
+
+```{r include=FALSE}
+
+
+X <- d2 %>% 
+  # select(!c(...1)) %>% 
+
+    na.omit()
+
+
+
+# 
+
+y <- X %>%
+  select(economics2) %>%
+  unlist() %>% 
+  as.data.frame()
+y <- y[[1]]
+
+X <- X %>%
+  select(!economics2) %>%
+  select(where(is.numeric)) %>% 
+  select(!contains(c("codelow", "_sd", "codehigh", '_osp'))) %>%
+  # select(!contains("e_wbgi")) %>%
+  as.data.frame() 
+
+# x <- X %>% dplyr::select(where(is.numeric))
+
+# lapply(X, as.numeric)
+
+```
+
+
+
+### BART Model
+Now we can set up and run the bartMachine.
+
+
+
+```{r message=FALSE, warning=FALSE}
+
+bart_machine = bartMachine(X = X, y = y, num_burn_in = 2000)
+bart_machine
+```
+
+```{r}
+plot_convergence_diagnostics(bart_machine)
+```
+
+
+```{r}
+plot_y_vs_yhat(bart_machine)
+```
+
+
+Partial Dependence Plots
+
+```{r PD}
+  try(
+
+    for (i in 1:length(bart_machine[["training_data_features"]])) {
+  
+        pd_plot(bart_machine,  bart_machine[["training_data_features"]][i])
+
+    }
+  )
+```
+
+## Predicting Civil Wars
+
+Mediation Climate -> GDP -> Civil War
+
+Also Rugged -> GDP -> Civil War
+
+
+```{r}
+d_civ %>% 
+  filter(year > 2005) %>% 
+  select(c(domestic3, economics2, energy1, contains("Soil_HIS"), contains("Globcove"), contains("bio")))
+  # select(c(economics2, energy1, contains("bio"))) %>% 
+  mutate(abs_temp = abs(bio6_media)) %>% 
+      select(c(domestic3, abs_temp, economics2, energy1, bio12_vari ))
+
+```
+
